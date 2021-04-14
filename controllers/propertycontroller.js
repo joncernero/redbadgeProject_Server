@@ -25,11 +25,12 @@ router.get('/get', validateSession, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
-router.get('/:id', validateSession, function (req, res) {
-  Property.findAll()
+router.get('/get/:id', validateSession, function (req, res) {
+  Property.findOne({ where: { owner: req.user.id } })
     .then((property) => res.status(200).json(property))
     .catch((err) => res.status(500).json({ error: err }));
 });
+
 router.put('/update/:id', validateSession, function (req, res) {
   const updatePropertyInfo = {
     name: req.body.name,
