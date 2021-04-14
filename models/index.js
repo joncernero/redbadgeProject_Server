@@ -1,9 +1,9 @@
-const Unit = require('./unit.js');
-const User = require('./user.js');
-const Room = require('./room.js');
-const Property = require('./property.js');
-const Photo = require('./photo.js');
-const Company = require('./company.js');
+const Unit = require('./unit');
+const User = require('./user');
+const Room = require('./room');
+const Property = require('./property');
+const Photo = require('./photo');
+const Company = require('./company');
 
 User.belongsTo(Company);
 Company.hasMany(User);

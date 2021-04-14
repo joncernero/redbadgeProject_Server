@@ -72,18 +72,34 @@ router.get('/get', validateSession, validateAdmin, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
-router.put('/update/:id', validateSession, function (req, res) {
+router.put('/update', validateSession, function (req, res) {
   const updateUserInfo = {
     firstName: req.body.user.firstName,
     lastName: req.body.user.lastName,
-    role: req.body.user.role,
+    password: bcrypt.hashSync(req.body.user.password, 13),
   };
-  const query = { where: { id: req.params.id } };
+  const query = { where: { id: req.user.id } };
 
   User.update(updateUserInfo, query)
     .then((user) => res.status(200).json(user))
     .catch((err) => res.status(500).json({ error: err }));
 });
+
+router.put(
+  '/update/admin/:id',
+  validateSession,
+  validateAdmin,
+  function (req, res) {
+    const updateRolesInfo = {
+      role: req.body.role,
+    };
+    const query = { where: { id: req.params.id } };
+
+    User.update(updateRolesInfo, query)
+      .then((user) => res.status(200).json(user))
+      .catch((err) => res.status(500).json({ error: err }));
+  }
+);
 
 router.delete(
   '/delete/:id',
