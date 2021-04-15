@@ -2,6 +2,7 @@ const { Router } = require('express');
 let router = Router();
 const { Room } = require('../models');
 let validateSession = require('../middleware/validate-session');
+let validateAdmin = require('../middleware/validate-admin');
 
 router.post('/create', validateSession, function (req, res) {
   const newRoom = {
@@ -9,7 +10,7 @@ router.post('/create', validateSession, function (req, res) {
     feature: req.body.room.feature,
     value: req.body.room.value,
     notes: req.body.room.notes,
-    unitId: req.body.unitId,
+    unitId: req.body.room.unitId,
   };
   Room.create(newRoom)
     .then((room) => res.status(200).json(room))
@@ -18,6 +19,12 @@ router.post('/create', validateSession, function (req, res) {
 
 router.get('/get', validateSession, function (req, res) {
   Room.findAll()
+    .then((room) => res.status(200).json(room))
+    .catch((err) => res.status(500).json({ error: err }));
+});
+
+router.get('/get/unit/:id', validateSession, function (req, res) {
+  Room.findAll({ where: { unitId: req.body.room.unitId } })
     .then((room) => res.status(200).json(room))
     .catch((err) => res.status(500).json({ error: err }));
 });
@@ -48,9 +55,17 @@ router.put('/update/:id', validateSession, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
-router.delete('/delete/:id', validateSession, function (req, res) {
-  const query = { where: { id: req.params.id } };
-  Room.destroy(query).then(() => res.status(200).json({ error: err }));
-});
+router.delete(
+  '/delete/:id',
+  validateSession,
+  validateAdmin,
+  function (req, res) {
+    const query = { where: { id: req.params.id } };
+
+    Room.destroy(query)
+      .then(() => res.status(200).json({ message: 'Room Removed' }))
+      .catch((err) => res.status(500).json({ error: err }));
+  }
+);
 
 module.exports = router;
