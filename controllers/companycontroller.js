@@ -22,6 +22,12 @@ router.post('/create', validateSession, validateAdmin, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
+router.get('/get/:id', validateSession, function (req, res) {
+  Company.findOne()
+    .then((company) => res.status(200).json(company))
+    .catch((err) => res.status(500).json({ error: err }));
+});
+
 router.put('/update/:id', validateSession, validateAdmin, function (req, res) {
   const updateCompany = {
     companyName: req.body.companyName,
