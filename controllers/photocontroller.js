@@ -22,7 +22,11 @@ router.get('/get', validateSession, function (req, res) {
 });
 
 router.get('/:id', validateSession, function (req, res) {
-  Photo.findAll()
+  const query = {
+    where: { roomId: req.body.roomId },
+    include: 'room',
+  };
+  Photo.findAll(query)
     .then((photo) => res.status(200).json(photo))
     .catch((err) => res.status(500).json({ error: err }));
 });

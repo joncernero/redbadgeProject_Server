@@ -26,7 +26,11 @@ router.get('/get', validateSession, function (req, res) {
 });
 
 router.get('/get/:id', validateSession, function (req, res) {
-  Property.findOne({ where: { owner: req.user.id } })
+  const query = {
+    where: { companyId: req.user.companyId },
+    include: 'company',
+  };
+  Property.findOne(query)
     .then((property) => res.status(200).json(property))
     .catch((err) => res.status(500).json({ error: err }));
 });
@@ -39,7 +43,6 @@ router.put('/update/:id', validateSession, function (req, res) {
     state: req.body.state,
     zipcode: req.body.zipcode,
     numberOfUnits: req.body.numberOfUnits,
-    totalSquareFootage: req.body.unit.totalSquareFootage,
   };
 
   const query = { where: { id: req.params.id } };
@@ -55,7 +58,10 @@ router.delete(
   validateAdmin,
   function (req, res) {
     const query = { where: { id: req.params.id } };
-    Property.destroy(query).then(() => res.status(200).json({ error: err }));
+
+    Property.destroy(query)
+      .then(() => res.status(200).json({ message: 'Property Removed' }))
+      .catch((err) => res.status(500).json({ error: err }));
   }
 );
 

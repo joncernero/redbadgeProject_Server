@@ -25,8 +25,12 @@ router.get('/get', validateSession, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
-router.get('/:id', validateSession, function (req, res) {
-  Unit.findAll()
+router.get('/get/:id', validateSession, function (req, res) {
+  const query = {
+    where: { property: req.body.unit.propertyId },
+    include: 'property',
+  };
+  Unit.findOne(query)
     .then((unit) => res.status(200).json(unit))
     .catch((err) => res.status(500).json({ error: err }));
 });

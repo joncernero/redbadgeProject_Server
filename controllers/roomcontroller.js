@@ -23,7 +23,11 @@ router.get('/get', validateSession, function (req, res) {
 });
 
 router.get('/:id', validateSession, function (req, res) {
-  Room.findAll()
+  const query = {
+    where: { unitId: req.body.unitId },
+    include: 'unit',
+  };
+  Room.findOne(query)
     .then((room) => res.status(200).json(room))
     .catch((err) => res.status(500).json({ error: err }));
 });
