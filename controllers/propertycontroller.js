@@ -26,7 +26,7 @@ router.get('/get', validateSession, function (req, res) {
 });
 
 router.get('/get/company/:id', validateSession, function (req, res) {
-  Property.findAll({ where: { companyId: req.user.companyId } })
+  Property.findAll({ where: { companyId: req.params.id } })
     .then((property) => res.status(200).json(property))
     .catch((err) => res.status(500).json({ error: err }));
 });

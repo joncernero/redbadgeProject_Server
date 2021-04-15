@@ -37,7 +37,7 @@ router.get('/get/property/:id', validateSession, function (req, res) {
 });
 
 router.get('/get/:id', validateSession, function (req, res) {
-  Unit.findAll({ where: { propertyId: req.body.unit.propertyId } })
+  Unit.findAll({ where: { propertyId: req.params.id } })
     .then((unit) => res.status(200).json(unit))
     .catch((err) => res.status(500).json({ error: err }));
 });

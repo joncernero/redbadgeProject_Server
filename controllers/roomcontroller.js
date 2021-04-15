@@ -24,7 +24,7 @@ router.get('/get', validateSession, function (req, res) {
 });
 
 router.get('/get/unit/:id', validateSession, function (req, res) {
-  Room.findAll({ where: { unitId: req.body.room.unitId } })
+  Room.findAll({ where: { unitId: req.params.id } })
     .then((room) => res.status(200).json(room))
     .catch((err) => res.status(500).json({ error: err }));
 });

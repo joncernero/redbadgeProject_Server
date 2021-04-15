@@ -33,7 +33,7 @@ router.get('/:id', validateSession, function (req, res) {
 });
 
 router.get('/get/room/:id', validateSession, function (req, res) {
-  Photo.findAll({ where: { roomId: req.body.roomId } })
+  Photo.findAll({ where: { roomId: req.params.id } })
     .then((photo) => res.status(200).json(photo))
     .catch((err) => res.status(500).json({ error: err }));
 });
