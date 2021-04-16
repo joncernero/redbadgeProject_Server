@@ -3,7 +3,7 @@ const db = require('../db');
 
 const Feature = db.define('feature', {
   feature: {
-    type: DataTypes.STRING(1000),
+    type: DataTypes.STRING,
     allowNull: true,
   },
   roomType: {
