@@ -1,30 +1,30 @@
 const { Router } = require('express');
 let router = Router();
-const { Room } = require('../models');
+const { Feature } = require('../models');
 let validateSession = require('../middleware/validate-session');
 let validateAdmin = require('../middleware/validate-admin');
 
 router.post('/create', validateSession, function (req, res) {
-  const newRoom = {
-    roomType: req.body.room.roomType,
+  const newFeature = {
     feature: req.body.room.feature,
+    roomType: req.body.room.roomType,
     value: req.body.room.value,
     notes: req.body.room.notes,
     unitId: req.body.room.unitId,
   };
-  Room.create(newRoom)
-    .then((room) => res.status(200).json(room))
+  Feature.create(newFeature)
+    .then((feature) => res.status(200).json(feature))
     .catch((err) => res.status(500).json({ error: err }));
 });
 
 router.get('/get', validateSession, function (req, res) {
-  Room.findAll()
-    .then((room) => res.status(200).json(room))
+  Feature.findAll()
+    .then((feature) => res.status(200).json(feature))
     .catch((err) => res.status(500).json({ error: err }));
 });
 
 router.get('/get/unit/:id', validateSession, function (req, res) {
-  Room.findAll({ where: { unitId: req.params.id } })
+  Feature.findAll({ where: { unitId: req.params.id } })
     .then((room) => res.status(200).json(room))
     .catch((err) => res.status(500).json({ error: err }));
 });
@@ -34,24 +34,23 @@ router.get('/:id', validateSession, function (req, res) {
     where: { unitId: req.body.unitId },
     include: 'unit',
   };
-  Room.findOne(query)
-    .then((room) => res.status(200).json(room))
+  Feature.findOne(query)
+    .then((feature) => res.status(200).json(feature))
     .catch((err) => res.status(500).json({ error: err }));
 });
 
 router.put('/update/:id', validateSession, function (req, res) {
-  const updateRoomInfo = {
-    roomType: req.body.room.roomType,
+  const updateFeature = {
     feature: req.body.room.feature,
+    roomType: req.body.room.roomType,
     value: req.body.room.value,
     notes: req.body.room.notes,
-    unitId: req.body.unitId,
   };
 
   const query = { where: { id: req.params.id } };
 
-  Room.update(updateRoomInfo, query)
-    .then((room) => res.status(200).json(room))
+  Feature.update(updateFeature, query)
+    .then((feature) => res.status(200).json(feature))
     .catch((err) => res.status(500).json({ error: err }));
 });
 
@@ -62,8 +61,8 @@ router.delete(
   function (req, res) {
     const query = { where: { id: req.params.id } };
 
-    Room.destroy(query)
-      .then(() => res.status(200).json({ message: 'Room Removed' }))
+    Feature.destroy(query)
+      .then(() => res.status(200).json({ message: 'Feature Removed' }))
       .catch((err) => res.status(500).json({ error: err }));
   }
 );

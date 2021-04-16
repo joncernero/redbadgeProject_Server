@@ -9,7 +9,7 @@ router.post('/create', validateSession, function (req, res) {
   const newPhoto = {
     name: req.body.photo.name,
     url: req.body.photo.url,
-    roomId: req.body.roomId,
+    unitId: req.body.unitId,
   };
   Photo.create(newPhoto)
     .then((photo) => req.status(200).json(photo))
@@ -33,7 +33,7 @@ router.get('/:id', validateSession, function (req, res) {
 });
 
 router.get('/get/room/:id', validateSession, function (req, res) {
-  Photo.findAll({ where: { roomId: req.params.id } })
+  Photo.findAll({ where: { unitId: req.params.id } })
     .then((photo) => res.status(200).json(photo))
     .catch((err) => res.status(500).json({ error: err }));
 });

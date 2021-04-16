@@ -15,7 +15,7 @@ app.use('/company', controllers.company);
 app.use('/user', controllers.user);
 app.use('/property', controllers.property);
 app.use('/unit', controllers.unit);
-app.use('/room', controllers.room);
+app.use('/feature', controllers.feature);
 app.use('/photo', controllers.photo);
 
 sequelize

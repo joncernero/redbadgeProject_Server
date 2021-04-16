@@ -1,6 +1,6 @@
 const Unit = require('./unit');
 const User = require('./user');
-const Room = require('./room');
+const Feature = require('./feature');
 const Property = require('./property');
 const Photo = require('./photo');
 const Company = require('./company');
@@ -8,11 +8,11 @@ const Company = require('./company');
 User.belongsTo(Company);
 Company.hasMany(User);
 
-Room.hasMany(Photo);
-Photo.belongsTo(Room);
+Unit.hasMany(Photo);
+Photo.belongsTo(Unit);
 
-Unit.hasMany(Room);
-Room.belongsTo(Unit);
+Unit.hasMany(Feature);
+Feature.belongsTo(Unit);
 
 Property.hasMany(Unit);
 Unit.belongsTo(Property);
@@ -23,7 +23,7 @@ Company.hasMany(Property);
 module.exports = {
   User,
   Unit,
-  Room,
+  Feature,
   Property,
   Photo,
   Company,

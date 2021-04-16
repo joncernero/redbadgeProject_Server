@@ -1,13 +1,13 @@
 const { DataTypes } = require('sequelize');
 const db = require('../db');
 
-const Room = db.define('room', {
-  roomType: {
-    type: DataTypes.STRING(1000),
-    allowNull: false,
-  },
+const Feature = db.define('feature', {
   feature: {
     type: DataTypes.STRING(1000),
+    allowNull: true,
+  },
+  roomType: {
+    type: DataTypes.STRING,
     allowNull: true,
   },
   value: {
@@ -20,4 +20,4 @@ const Room = db.define('room', {
   },
 });
 
-module.exports = Room;
+module.exports = Feature;
