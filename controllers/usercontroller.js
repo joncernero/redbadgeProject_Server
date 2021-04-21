@@ -16,9 +16,13 @@ router.post('/register', function (req, res) {
     companyId: req.body.user.companyId,
   })
     .then(function registrationSuccess(user) {
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: 60 * 60 * 24,
-      });
+      const token = jwt.sign(
+        { id: user.id, companyId: user.companyId },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: 60 * 60 * 24,
+        }
+      );
 
       res.status(200).json({
         user: user,
