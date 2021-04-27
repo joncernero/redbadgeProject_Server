@@ -6,11 +6,11 @@ let validateAdmin = require('../middleware/validate-admin');
 
 router.post('/create', validateSession, function (req, res) {
   const newFeature = {
-    feature: req.body.room.feature,
-    roomType: req.body.room.roomType,
-    value: req.body.room.value,
-    notes: req.body.room.notes,
-    unitId: req.body.room.unitId,
+    feature: req.body.feature.feature,
+    roomType: req.body.feature.roomType,
+    value: req.body.feature.value,
+    notes: req.body.feature.notes,
+    unitId: req.body.unitId,
   };
   Feature.create(newFeature)
     .then((feature) => res.status(200).json(feature))
@@ -41,10 +41,10 @@ router.get('/:id', validateSession, function (req, res) {
 
 router.put('/update/:id', validateSession, function (req, res) {
   const updateFeature = {
-    feature: req.body.room.feature,
-    roomType: req.body.room.roomType,
-    value: req.body.room.value,
-    notes: req.body.room.notes,
+    feature: req.body.feature.feature,
+    roomType: req.body.feature.roomType,
+    value: req.body.feature.value,
+    notes: req.body.feature.notes,
   };
 
   const query = { where: { id: req.params.id } };
