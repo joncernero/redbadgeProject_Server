@@ -25,6 +25,13 @@ router.get('/get', validateSession, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
+router.get('/get/property/:name', validateSession, function (req, res) {
+  let name = req.params.name;
+  Property.findAll({ where: { name: name } })
+    .then((property) => res.status(200).json(property))
+    .catch((err) => res.status(500).json({ error: err }));
+});
+
 router.get('/get/company/:id', validateSession, function (req, res) {
   Property.findAll({ where: { companyId: req.params.id } })
     .then((property) => res.status(200).json(property))

@@ -14,10 +14,15 @@ router.post('/create', validateSession, validateAdmin, function (req, res) {
     city: req.body.city,
     state: req.body.state,
     zipcode: req.body.zipcode,
-    logo: req.body.logo,
-    userId: req.user.id,
   };
   Company.create(newCompany)
+    .then((company) => res.status(200).json(company))
+    .catch((err) => res.status(500).json({ error: err }));
+});
+
+router.get('/get/company/:companyName', validateSession, function (req, res) {
+  let companyName = req.params.companyName;
+  Company.findAll({ where: { companyName: companyName } })
     .then((company) => res.status(200).json(company))
     .catch((err) => res.status(500).json({ error: err }));
 });
@@ -35,7 +40,6 @@ router.put('/update/:id', validateSession, validateAdmin, function (req, res) {
     city: req.body.city,
     state: req.body.state,
     zipcode: req.body.zipcode,
-    logo: req.body.logo,
   };
 
   const query = { where: { id: req.params.id } };

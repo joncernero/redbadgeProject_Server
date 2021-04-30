@@ -26,6 +26,13 @@ router.get('/get', validateSession, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
+router.get('/get/unit/:unitNumber', validateSession, function (req, res) {
+  let unitNumber = req.params.unitNumber;
+  Unit.findAll({ where: { unitNumber: unitNumber } })
+    .then((unit) => res.status(200).json(unit))
+    .catch((err) => res.status(500).json({ error: err }));
+});
+
 router.get('/get/property/:id', validateSession, function (req, res) {
   const query = {
     where: { property: req.body.unit.propertyId },

@@ -22,10 +22,6 @@ const Company = db.define('company', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  logo: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
 });
 
 module.exports = Company;
