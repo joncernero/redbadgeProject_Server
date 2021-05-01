@@ -17,7 +17,7 @@ router.post('/create', validateSession, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
-router.get('/get', validateSession, function (req, res) {
+router.get('/', validateSession, function (req, res) {
   Feature.findAll()
     .then((feature) => res.status(200).json(feature))
     .catch((err) => res.status(500).json({ error: err }));
@@ -41,10 +41,10 @@ router.get('/:id', validateSession, function (req, res) {
 
 router.put('/update/:id', validateSession, function (req, res) {
   const updateFeature = {
-    feature: req.body.feature.feature,
-    roomType: req.body.feature.roomType,
-    value: req.body.feature.value,
-    notes: req.body.feature.notes,
+    feature: req.body.feature,
+    roomType: req.body.roomType,
+    value: req.body.value,
+    notes: req.body.notes,
   };
 
   const query = { where: { id: req.params.id } };
