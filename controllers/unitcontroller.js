@@ -20,7 +20,7 @@ router.post('/create', validateSession, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
-router.get('/get', validateSession, function (req, res) {
+router.get('/', validateSession, function (req, res) {
   Unit.findAll()
     .then((unit) => res.status(200).json(unit))
     .catch((err) => res.status(500).json({ error: err }));
@@ -51,12 +51,12 @@ router.get('/get/:id', validateSession, function (req, res) {
 
 router.put('/update/:id', validateSession, function (req, res) {
   const updateUnitInfo = {
-    name: req.body.unit.name,
-    unitNumber: req.body.unit.unitNumber,
-    bldgNumber: req.body.unit.bldgNumber,
-    numberOfBeds: req.body.unit.numberOfBeds,
-    numberOfBaths: req.body.unit.numberOfBaths,
-    totalSquareFootage: req.body.unit.totalSquareFootage,
+    name: req.body.name,
+    unitNumber: req.body.unitNumber,
+    bldgNumber: req.body.bldgNumber,
+    numberOfBeds: req.body.numberOfBeds,
+    numberOfBaths: req.body.numberOfBaths,
+    totalSquareFootage: req.body.totalSquareFootage,
   };
 
   const query = { where: { id: req.params.id } };
