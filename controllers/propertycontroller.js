@@ -27,7 +27,7 @@ router.get('/', validateSession, function (req, res) {
 
 router.get('/:name', validateSession, function (req, res) {
   let name = req.params.name;
-  Property.findAll({ where: { name: name } })
+  Property.findAll({ where: { name: name }, include: 'units' })
     .then((property) => res.status(200).json(property))
     .catch((err) => res.status(500).json({ error: err }));
 });

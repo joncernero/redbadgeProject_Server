@@ -8,14 +8,41 @@ const Company = require('./company');
 User.belongsTo(Company);
 Company.hasMany(User);
 
-Unit.hasMany(Photo);
-Photo.belongsTo(Unit);
+Unit.associate = (models) => {
+  Unit.hasMany(models.Photo, {
+    onDelete: 'cascade',
+  });
+  Photo.belongsTo(models.Unit, {
+    onDelete: 'cascade',
+    foreignKey: {
+      allowNull: false,
+    },
+  });
+};
 
-Unit.hasMany(Feature);
-Feature.belongsTo(Unit);
+Unit.associate = (models) => {
+  Unit.hasMany(models.Feature, {
+    onDelete: 'cascade',
+  });
+  Feature.belongsTo(models.Unit, {
+    onDelete: 'cascade',
+    foreignKey: {
+      allowNull: false,
+    },
+  });
+};
 
-Property.hasMany(Unit);
-Unit.belongsTo(Property);
+Property.associate = (models) => {
+  Property.hasMany(models.Unit, {
+    onDelete: 'cascade',
+  });
+  Unit.belongsTo(models.Property, {
+    onDelete: 'cascade',
+    foreignKey: {
+      allowNull: false,
+    },
+  });
+};
 
 Property.belongsTo(Company);
 Company.hasMany(Property);

@@ -12,7 +12,7 @@ router.post('/create', validateSession, function (req, res) {
     numberOfBeds: req.body.unit.numberOfBeds,
     numberOfBaths: req.body.unit.numberOfBaths,
     totalSquareFootage: req.body.unit.totalSquareFootage,
-    propertyId: req.body.unit.propertyId,
+    propertyName: req.body.unit.propertyName,
   };
 
   Unit.create(newUnit)
@@ -35,7 +35,7 @@ router.get('/get/unit/:unitNumber', validateSession, function (req, res) {
 
 router.get('/get/property/:id', validateSession, function (req, res) {
   const query = {
-    where: { property: req.body.unit.propertyId },
+    where: { property: req.body.unit.propertyName },
     include: 'property',
   };
   Unit.findOne(query)
