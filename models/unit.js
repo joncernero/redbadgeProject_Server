@@ -28,4 +28,18 @@ const Unit = db.define('unit', {
   },
 });
 
+Unit.associate = (models) => {
+  Unit.belongsTo(models.Property, {
+    foreignKey: {
+      allowNull: false,
+    },
+  });
+  Unit.hasMany(models.Feature, {
+    onDelete: 'CASCADE',
+  });
+  Unit.hasMany(models.Photos, {
+    onDelete: 'CASCADE',
+  });
+};
+
 module.exports = Unit;

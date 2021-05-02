@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 router.post('/create', validateSession, validateAdmin, function (req, res) {
-  console.log(req.user.id);
   const newCompany = {
     companyName: req.body.companyName,
     companyAddress: req.body.companyAddress,

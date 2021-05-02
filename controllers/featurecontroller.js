@@ -10,7 +10,7 @@ router.post('/create', validateSession, function (req, res) {
     roomType: req.body.feature.roomType,
     value: req.body.feature.value,
     notes: req.body.feature.notes,
-    unitId: req.body.unitId,
+    unitId: req.body.units_unitId_fkey,
   };
   Feature.create(newFeature)
     .then((feature) => res.status(200).json(feature))

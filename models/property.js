@@ -28,4 +28,9 @@ const Property = db.define('property', {
   },
 });
 
+Property.associate = (models) => {
+  Property.hasMany(models.Unit, {
+    onDelete: 'cascade',
+  });
+};
 module.exports = Property;

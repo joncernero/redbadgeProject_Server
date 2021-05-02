@@ -1,0 +1,25 @@
+// router.post('/create', validateSession, (req, res) => {
+//   Property.findOne({
+//     where: {
+//       id: req.body.unit.propertyId,
+//     },
+//   })
+//     .then((foundProperty) => {
+//       console.log(foundProperty);
+//       foundProperty
+//         .createUnit({
+//           name: req.body.unit.name,
+//           unitNumber: req.body.unit.unitNumber,
+//           bldgNumber: req.body.unit.bldgNumber,
+//           numberOfBeds: req.body.unit.numberOfBeds,
+//           numberOfBaths: req.body.unit.numberOfBaths,
+//           totalSquareFootage: req.body.unit.totalSquareFootage,
+//         })
+//         .then((createdUnit) => {
+//           console.log(createdUnit);
+//           res.status(200).json(createdUnit);
+//         })
+//         .catch((err) => res.status(500).json(err));
+//     })
+//     .catch((err) => res.status(500).json(err));
+// });

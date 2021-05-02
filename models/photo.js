@@ -12,4 +12,12 @@ const Photos = db.define('photos', {
   },
 });
 
+Photos.associate = (models) => {
+  Photos.belongsTo(models.Unit, {
+    foreignKey: {
+      allowNull: false,
+    },
+  });
+};
+
 module.exports = Photos;

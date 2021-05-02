@@ -20,4 +20,12 @@ const Feature = db.define('feature', {
   },
 });
 
+Feature.associate = (models) => {
+  Feature.belongsTo(models.Unit, {
+    foreignKey: {
+      allowNull: false,
+    },
+  });
+};
+
 module.exports = Feature;

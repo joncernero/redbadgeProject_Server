@@ -9,7 +9,7 @@ router.post('/create', validateSession, function (req, res) {
   const newPhoto = {
     name: req.body.photo.name,
     url: req.body.photo.url,
-    unitId: req.body.unitId,
+    unitId: req.body.units_unitId_fkey,
   };
   Photo.create(newPhoto)
     .then((photo) => req.status(200).json(photo))

@@ -12,7 +12,7 @@ router.post('/create', validateSession, function (req, res) {
     state: req.body.state,
     zipcode: req.body.zipcode,
     numberOfUnits: req.body.numberOfUnits,
-    companyId: req.user.companyId,
+    companyId: req.body.properties_companyId_fkey,
   };
   Property.create(newProperty)
     .then((property) => res.status(200).json(property))
