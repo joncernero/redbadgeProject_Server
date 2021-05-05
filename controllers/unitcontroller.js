@@ -1,10 +1,10 @@
 const { Router } = require('express');
 let router = Router();
-const { Unit, User } = require('../models');
+const { Unit, User, Property } = require('../models');
 let validateSession = require('../middleware/validate-session');
 let validateAdmin = require('../middleware/validate-admin');
 
-router.post('/create', validateSession, function (req, res) {
+router.post('/create', validateSession, async (req, res) => {
   const newUnit = {
     name: req.body.unit.name,
     unitNumber: req.body.unit.unitNumber,
@@ -12,12 +12,27 @@ router.post('/create', validateSession, function (req, res) {
     numberOfBeds: req.body.unit.numberOfBeds,
     numberOfBaths: req.body.unit.numberOfBaths,
     totalSquareFootage: req.body.unit.totalSquareFootage,
-    propertyName: req.body.unit.propertyName,
+    // propertyId: req.body.units_propertyId_fkey,
   };
 
-  Unit.create(newUnit)
-    .then((unit) => res.status(200).json(unit))
-    .catch((err) => res.status(500).json({ error: err }));
+  try {
+    const property = await Property.findOne({
+      where: { id: req.body.unit.propertyId },
+    });
+
+    const unit = await Unit.create(newUnit);
+
+    property.addUnit(unit);
+
+    console.log('🚨', { unit, property });
+
+    res.status(200).json(unit);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+
+  // .then((unit) => res.status(200).json(unit.))
+  // .catch((err) => res.status(500).json({ error: err }));
 });
 
 router.get('/', validateSession, function (req, res) {
@@ -43,8 +58,8 @@ router.get('/get/property/:id', validateSession, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
-router.get('/get/:id', validateSession, function (req, res) {
-  Unit.findAll({ where: { propertyId: req.params.id } })
+router.get('/:propertyId', validateSession, function (req, res) {
+  Unit.findAll({ where: { propertyId: req.params.propertyId } })
     .then((unit) => res.status(200).json(unit))
     .catch((err) => res.status(500).json({ error: err }));
 });
