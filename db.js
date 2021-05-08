@@ -14,6 +14,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   },
 });
 
+//hello
 sequelize.authenticate().then(
   function () {
     console.logI(`Connected to red-badge-project postgres database`);
