@@ -70,7 +70,7 @@ router.post('/login', function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
-router.get('/get', validateSession, validateAdmin, function (req, res) {
+router.get('/', validateSession, validateAdmin, function (req, res) {
   User.findAll()
     .then((user) => res.status(200).json(user))
     .catch((err) => res.status(500).json({ error: err }));
