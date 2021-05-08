@@ -4,7 +4,7 @@ const { Sequelize } = require('sequelize');
 //   dialect: 'postgres',
 // });
 
-const db = new Sequelize(process.env.DATABASE_URL, {
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'postgres',
   dialectOptions: {
     ssl: {
@@ -14,7 +14,7 @@ const db = new Sequelize(process.env.DATABASE_URL, {
   },
 });
 
-db.authenticate().then(
+sequelize.authenticate().then(
   function () {
     console.logI(`Connected to red-badge-project postgres database`);
   },
@@ -23,4 +23,4 @@ db.authenticate().then(
   }
 );
 
-module.exports = db;
+module.exports = sequelize;
