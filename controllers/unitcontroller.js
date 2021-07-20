@@ -1,38 +1,24 @@
 const { Router } = require('express');
-let router = Router();
+const router = Router();
 const { Unit, User, Property } = require('../models');
-let validateSession = require('../middleware/validate-session');
-let validateAdmin = require('../middleware/validate-admin');
+const validateSession = require('../middleware/validate-session');
+const validateAdmin = require('../middleware/validate-admin');
 
 router.post('/create', validateSession, async (req, res) => {
-  const newUnit = {
-    name: req.body.unit.name,
-    unitNumber: req.body.unit.unitNumber,
-    bldgNumber: req.body.unit.bldgNumber,
-    numberOfBeds: req.body.unit.numberOfBeds,
-    numberOfBaths: req.body.unit.numberOfBaths,
-    totalSquareFootage: req.body.unit.totalSquareFootage,
-    // propertyId: req.body.units_propertyId_fkey,
-  };
-
   try {
     const property = await Property.findOne({
-      where: { id: req.body.unit.propertyId },
+      where: { id: Number(req.body.propertyId) },
     });
 
-    const unit = await Unit.create(newUnit);
+    const unit = await Unit.create(req.body.unit);
 
     property.addUnit(unit);
 
-    console.log('🚨', { unit, property });
-
     res.status(200).json(unit);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err });
   }
-
-  // .then((unit) => res.status(200).json(unit.))
-  // .catch((err) => res.status(500).json({ error: err }));
 });
 
 router.get('/', validateSession, function (req, res) {
@@ -81,16 +67,35 @@ router.put('/update/:id', validateSession, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
+// ! Check if your headers are correct. Should be the same for all requests.
+
 router.delete(
   '/delete/:id',
   validateSession,
   validateAdmin,
   function (req, res) {
     const query = { where: { id: req.params.id } };
+
     Unit.destroy(query)
-      .then(() => res.status(200).json({ message: 'Unit Removed' }))
+      .then(() => res.status(200).json({ message: 'Unit Removed ' }))
       .catch((err) => res.status(500).json({ error: err }));
   }
+  // async (req, res) => {
+  //   try {
+  //     const totalUnitsRemoved = await Unit.destroy({
+  //       where: {
+  //         id: Number(req.params.id),
+  //       },
+  //     });
+
+  //     res
+  //       .status(200)
+  //       .json({ message: `Unit(s) Removed: ${totalUnitsRemoved}` });
+  //   } catch (e) {
+  //     console.error(e);
+  //     res.status(500).json({ error: e });
+  //   }
+  // }
 );
 
 module.exports = router;

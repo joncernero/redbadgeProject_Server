@@ -1,34 +1,24 @@
 const { Router } = require('express');
-let router = Router();
+const router = Router();
 const { Feature, Unit } = require('../models');
-let validateSession = require('../middleware/validate-session');
-let validateAdmin = require('../middleware/validate-admin');
+const validateSession = require('../middleware/validate-session');
+const validateAdmin = require('../middleware/validate-admin');
 
 router.post('/create', validateSession, async function (req, res) {
-  const newFeature = {
-    feature: req.body.feature.feature,
-    roomType: req.body.feature.roomType,
-    value: req.body.feature.value,
-    notes: req.body.feature.notes,
-    // unitId: req.body.unitId,
-  };
-
   try {
     const unit = await Unit.findOne({
-      where: { id: req.body.feature.unitId },
+      where: { id: Number(req.body.unitId) },
     });
 
-    const feature = await Feature.create(newFeature);
+    const feature = await Feature.create(req.body.feature);
 
     unit.addFeature(feature);
 
     res.status(200).json(feature);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err });
   }
-
-  // .then((feature) => res.status(200).json(feature))
-  // .catch((err) => res.status(500).json({ error: err }));
 });
 
 router.get('/', validateSession, function (req, res) {
