@@ -7,10 +7,10 @@ const validateAdmin = require('../middleware/validate-admin');
 router.post('/create', validateSession, async function (req, res) {
   try {
     const unit = await Unit.findOne({
-      where: { id: Number(req.body.unitId) },
+      where: { id: req.body.unitId },
     });
 
-    const feature = await Feature.create(req.body.feature);
+    const feature = await Feature.create(req.body);
 
     unit.addFeature(feature);
 

@@ -2,6 +2,11 @@ const { DataTypes } = require('sequelize');
 const db = require('../db');
 
 const Unit = db.define('unit', {
+  id: {
+    primaryKey: true,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: true,

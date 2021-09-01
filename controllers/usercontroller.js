@@ -6,14 +6,14 @@ let validateAdmin = require('../middleware/validate-admin');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-router.post('/register', function (req, res) {
+router.post('/register', validateSession, function (req, res) {
   User.create({
-    email: req.body.user.email,
-    password: bcrypt.hashSync(req.body.user.password, 13),
-    firstName: req.body.user.firstName,
-    lastName: req.body.user.lastName,
-    role: req.body.user.role,
-    companyId: req.body.user.companyId,
+    email: req.body.email,
+    password: bcrypt.hashSync(req.body.password, 13),
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    role: req.body.role,
+    companyId: req.user.companyId,
   })
     .then(function registrationSuccess(user) {
       const token = jwt.sign(
@@ -36,14 +36,14 @@ router.post('/register', function (req, res) {
 router.post('/login', function (req, res) {
   User.findOne({
     where: {
-      email: req.body.user.email,
+      email: req.body.email,
     },
   })
     .then(function loginSuccess(user) {
       if (user) {
         // res.json({ user: user })
         bcrypt.compare(
-          req.body.user.password,
+          req.body.password,
           user.password,
           function (err, matches) {
             if (matches) {
@@ -78,9 +78,9 @@ router.get('/', validateSession, validateAdmin, function (req, res) {
 
 router.put('/update', validateSession, function (req, res) {
   const updateUserInfo = {
-    firstName: req.body.user.firstName,
-    lastName: req.body.user.lastName,
-    password: bcrypt.hashSync(req.body.user.password, 13),
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    password: bcrypt.hashSync(req.body.password, 13),
   };
   const query = { where: { id: req.user.id } };
 
@@ -89,21 +89,18 @@ router.put('/update', validateSession, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
-router.put(
-  '/update/admin/:id',
-  validateSession,
-  validateAdmin,
-  function (req, res) {
-    const updateRolesInfo = {
-      role: req.body.role,
-    };
-    const query = { where: { id: req.params.id } };
+router.put('/update/:id', validateSession, validateAdmin, function (req, res) {
+  const updateRolesInfo = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    role: req.body.role,
+  };
+  const query = { where: { id: req.params.id } };
 
-    User.update(updateRolesInfo, query)
-      .then((user) => res.status(200).json(user))
-      .catch((err) => res.status(500).json({ error: err }));
-  }
-);
+  User.update(updateRolesInfo, query)
+    .then((user) => res.status(200).json(user))
+    .catch((err) => res.status(500).json({ error: err }));
+});
 
 router.delete(
   '/delete/:id',

@@ -1,6 +1,6 @@
 const { Router } = require('express');
 let router = Router();
-const { Property } = require('../models');
+const { Property, Company } = require('../models');
 let validateSession = require('../middleware/validate-session');
 let validateAdmin = require('../middleware/validate-admin');
 
@@ -18,6 +18,24 @@ router.post('/create', validateSession, function (req, res) {
     .then((property) => res.status(200).json(property))
     .catch((err) => res.status(500).json({ error: err }));
 });
+
+// router.post('/create', validateSession, async (req, res) => {
+
+//   try {
+//     const company = await Company.findByPk({
+//       where: { id: company.id },
+//     });
+
+//     const property = await Property.create(req.body.property);
+
+//     company.addProperty(property);
+
+//     res.status(200).json(property);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: err });
+//   }
+// });
 
 router.get('/', validateSession, function (req, res) {
   Property.findAll()
